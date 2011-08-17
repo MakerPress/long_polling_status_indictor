@@ -1,0 +1,58 @@
+<html>
+	<head>
+		<title>Lol</title>
+		<style type="text/css">
+.progress_log {
+	width: 300px;
+	height: 300px;
+	margin: 10px;
+    font-family: tahoma;
+    font-size: 10pt;
+}
+.progress_log .status {
+	font-size: 12pt;
+}
+.progress_log .status.complete {
+	color: green;
+}
+.progress_log .status.error {
+	color: red;
+}
+.progress_log .log {
+    border: 1px solid #CCCCCC;
+	border-bottom-width: 0;
+    list-style: none outside none;
+    margin: 0;
+    padding: 0;
+}
+.progress_log .log li {
+    border-bottom: 1px solid #BBBBBB;
+    list-style: none outside none;
+    margin: 0;
+    padding: 3px 6px;
+}
+.progress_log .log li.odd {
+    background: none repeat scroll 0 0 #EEEEEE;
+}
+.progress_log .log li.even {
+    background: none repeat scroll 0 0 #DDDDDD;
+}
+		</style>
+	</head>
+	<body>
+		<script type="text/javascript" src="https://ajax.googleapis.com/ajax/libs/jquery/1.6.2/jquery.min.js"></script>
+		<script type="text/javascript" src="script.js"></script>
+		<script type="text/javascript">
+			jQuery(function () {
+				$('#progress').file_progress();
+			});
+		</script>
+		<a id="start_button" href="#" onclick="return false;">Start (ends successfully)</a>
+		<div id="progress" class="progress_log">
+			<div>
+				<span class="status">Initalizing...</span>
+			</div>
+			<ul class="log"></ul>
+		</div>
+	</body>
+</html>
