@@ -47,12 +47,14 @@
 				$('#progress').file_progress();
 			});
 		</script>
-		<a id="start_button" href="#" onclick="return false;">Start (ends successfully)</a>
-		<div id="progress" class="progress_log">
+                   <form>
+                      <input type="submit" id="start_button" onclick="return false;" value="Build EPUB"/>
+                   </form>
+		   <div id="progress" class="progress_log">
 			<div>
-				<span class="status">Initalizing...</span>
+		  		<span class="status">Build Log</span>
 			</div>
 			<ul class="log"></ul>
-		</div>
+		   </div>
 	</body>
 </html>
