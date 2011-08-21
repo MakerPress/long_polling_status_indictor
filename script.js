@@ -23,7 +23,7 @@ jQuery(function () {
 		'delay': 100
 	};
 	
-	function poll_server($root, key) {
+	function poll_server($root, key, callback_url) {
 		var config = $root.file_progress('config');
 		var start_time = (new Date()).getTime();
 		$.ajax({
@@ -105,7 +105,7 @@ jQuery(function () {
 							dataType: 'json',
 							type: 'get',
 							success: function (json) {
-								poll_server($root, json.key_log);
+								poll_server($root, json.key_log, json.callback_url);
 							}
 						});
 					});
