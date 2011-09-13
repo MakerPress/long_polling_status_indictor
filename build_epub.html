@@ -1,0 +1,25 @@
+<html>
+	<head>
+		<title>Lol</title>
+               <link rel="stylesheet" type="text/css" href="/build_log.css" media="all">
+	</head>
+	<body>
+
+		<script type="text/javascript" src="https://ajax.googleapis.com/ajax/libs/jquery/1.6.2/jquery.min.js"></script>
+		<script type="text/javascript" src="build_epub.js"></script>
+		<script type="text/javascript">
+			$(document).ready(function () {
+				$('#progress').file_progress();
+			});
+		</script>
+                   <form>
+                      <input type="submit" id="start_button" onclick="return false;" value="Build EPUB"/>
+                   </form>
+		   <div id="progress" class="progress_log">
+			<div>
+		  		<span class="status">Build Log</span>
+			</div>
+			<ul class="log"></ul>
+		   </div>
+	</body>
+</html>
