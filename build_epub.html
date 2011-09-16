@@ -1,25 +1,96 @@
 <html>
-	<head>
-		<title>Lol</title>
-               <link rel="stylesheet" type="text/css" href="/build_log.css" media="all">
-	</head>
-	<body>
 
-		<script type="text/javascript" src="https://ajax.googleapis.com/ajax/libs/jquery/1.6.2/jquery.min.js"></script>
-		<script type="text/javascript" src="build_epub.js"></script>
-		<script type="text/javascript">
-			$(document).ready(function () {
-				$('#progress').file_progress();
-			});
-		</script>
-                   <form>
-                      <input type="submit" id="start_button" onclick="return false;" value="Build EPUB"/>
-                   </form>
-		   <div id="progress" class="progress_log">
-			<div>
-		  		<span class="status">Build Log</span>
-			</div>
-			<ul class="log"></ul>
-		   </div>
-	</body>
+<head>
+   <script 
+     src="http://ajax.googleapis.com/ajax/libs/jquery/1.6.2/jquery.min.js" 
+     type="text/javascript">
+   </script>
+
+   <style type="text/css">
+      .even {
+         font-weight: bold;
+      }
+   </style>
+
+</head>
+<body>
+<script type="text/javascript">
+
+   var interval_monitor;  //Global variable that holds the id for the interval
+
+   //This method updates the log
+   function build_log(data) {
+      switch (data.status) {
+         case "RUNNING":
+            var log = "";  //Set log to an empty string
+            // Build a string representing all log elements
+            for (entry in data.log) {
+               log += "<li>" + data.log[entry] + "</li>";
+            }
+            $("div#log-area ul#log").html(log);
+            break;
+         default:
+            clearInterval(interval_monitor);
+            $("div#log-area img#working-indicator").hide();
+            if (data.status == "COMPLETE") {
+               $("div#log-area a#view-epub").show().attr("href",data.epub_url);
+            } else {
+               $("div#log-area a#view-log").show().attr("href",data.log_url);
+            }
+            break;
+      }
+   }
+
+
+   //This procedure initiate the monitor_validate process
+   function showLaunch(d) {
+      $("div#log-area").show();
+      // Check the monitor log every 500 milliseconds
+      interval_monitor = setInterval(function() {
+            $.getJSON( d.callback_url, '', build_log);
+         },
+         500);
+   }
+
+   // Sets UI elements (buttons, logs, etc) to their initial state
+   function init_ui_elements() {
+      $("div#log-area").hide();
+      $("div#log-area a#view-epub").hide();
+      $("div#log-area a#view-log").hide();
+      $("div#log-area ul#log").html("");
+   }
+
+   // This method is executed when the page loads and is ready
+   $(document).ready(function() {
+      init_ui_elements();
+
+      // Define an area to print any ajax errors
+      $("div#error-log").ajaxError(function(event, request, settings, exc) {
+         $('div#error-log').text( "Error ==> " + exc );
+      });
+
+      // When they click the button, call launch_validate and pull down the JSON
+      // to get the key and callback URL	
+      $('a#ajax').click(function(evt) {
+         init_ui_elements();
+         $("div#log-area img#working-indicator").show();
+         $.getJSON( '/wsgi-bin/launch_validate.wsgi', '', showLaunch);
+         evt.preventDefault();
+      });
+
+   });
+</script>
+
+<body>
+   <a id="ajax" href="#">Click here for some Ajax</a>
+   <div id="log-area">
+      <img src="/working.gif" id="working-indicator" style="float: left; padding: 10px"/>Building Epub...
+      <ul id="log"></ul>
+      <a href="#" id="view-epub" >View EPUB</a>
+      <a href="#" id="view-log" >View Error Log</a>
+   </div>
+
+   <div id="error-log"></div>
+</body>
 </html>
+
