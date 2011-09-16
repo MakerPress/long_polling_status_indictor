@@ -1,3 +1,13 @@
+function getParameterByName(name) {
+
+    var match = RegExp('[?&]' + name + '=([^&]*)')
+                    .exec(window.location.search);
+
+    return match && decodeURIComponent(match[1].replace(/\+/g, ' '));
+
+}
+
+
 jQuery(function () {
 	var default_config = {
 		// The element that should trigger the plugin.
@@ -12,7 +22,7 @@ jQuery(function () {
 		
 		// The URL to initalize with, should return a JSON object
 		// with a 'key_log' key.
-		'init_url': 'wsgi-bin/launch_validate.wsgi',
+		'init_url': 'wsgi-bin/launch_validate.wsgi?root=' + getParameterByName('root'),
 		
 		// The URL to get progress from.
 		'prog_url': 'wsgi-bin/monitor_validate.wsgi',
